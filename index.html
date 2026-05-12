@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Inventory — Bassam's House</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Home Inventory</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230c0c0b'/><text x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23c4420a' text-anchor='middle'>B</text></svg>">
 <style>
@@ -33,272 +33,392 @@
     --purple-border: #c4b5fd;
     --radius: 14px;
     --radius-sm: 8px;
-    --max: 1100px;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-    --shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
-    --shadow-md: 0 8px 24px rgba(0,0,0,0.1), 0 3px 8px rgba(0,0,0,0.06);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow-md: 0 8px 24px rgba(0,0,0,0.14);
+    --shadow-lg: 0 16px 48px rgba(0,0,0,0.18);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg-soft); color: var(--text); min-height: 100vh; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg-soft); color: var(--text); min-height: 100dvh; overflow-x: hidden; }
 
+  /* ── HEADER ── */
   header {
-    background: var(--navy); padding: 20px 32px;
+    background: var(--navy);
+    padding: 16px 24px;
     display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+    position: sticky; top: 0; z-index: 50;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.2);
   }
-  .header-left { display: flex; align-items: center; gap: 14px; }
-  .header-icon { width: 38px; height: 38px; background: var(--blue); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-  header h1 { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: #fff; letter-spacing: -0.01em; }
-  header p { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 1px; }
-  .header-actions { display: flex; gap: 10px; }
-  .btn-ghost { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); padding: 8px 16px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: background 0.15s; display: flex; align-items: center; gap: 6px; }
-  .btn-ghost:hover { background: rgba(255,255,255,0.15); }
+  .header-brand { display: flex; align-items: center; gap: 12px; }
+  .header-icon { width: 34px; height: 34px; background: var(--blue); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+  header h1 { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: #fff; }
+  header p { font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-top: 1px; }
 
-  .app { display: flex; max-width: var(--max); margin: 0 auto; min-height: calc(100vh - 72px); }
+  /* ── HOME SCREEN ── */
+  #homeScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100dvh - 66px); padding: 32px 24px; }
 
-  .sidebar { width: 220px; flex-shrink: 0; background: var(--bg); border-right: 1px solid var(--border); padding: 24px 0; position: sticky; top: 72px; height: calc(100vh - 72px); overflow-y: auto; }
-  .sidebar-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-light); padding: 0 20px 10px; }
-  .room-btn { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 20px; background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--muted); cursor: pointer; text-align: left; transition: background 0.12s, color 0.12s; position: relative; }
-  .room-btn:hover { background: var(--bg-soft); color: var(--text); }
-  .room-btn.active { background: var(--blue-light); color: var(--blue); font-weight: 600; }
-  .room-btn.active::before { content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 3px; background: var(--blue); border-radius: 0 3px 3px 0; }
-  .room-btn .room-icon { font-size: 1rem; width: 20px; text-align: center; }
-  .room-count { margin-left: auto; font-size: 0.72rem; background: var(--bg-mid); color: var(--muted); padding: 2px 7px; border-radius: 20px; font-weight: 500; }
-  .room-btn.active .room-count { background: var(--blue-mid); color: var(--blue); }
-  .add-room-btn { width: calc(100% - 32px); margin: 12px 16px 0; padding: 9px 12px; background: none; border: 1px dashed var(--border-mid); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--muted); cursor: pointer; display: flex; align-items: center; gap: 7px; transition: border-color 0.15s, color 0.15s; }
-  .add-room-btn:hover { border-color: var(--blue); color: var(--blue); }
-  .sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+  /* ── ZERO STATE ── */
+  .zero-state { text-align: center; max-width: 380px; }
+  .zero-icon { font-size: 4rem; margin-bottom: 20px; opacity: 0.35; }
+  .zero-state h2 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin-bottom: 10px; }
+  .zero-state p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
+  .btn-upload { background: var(--blue); color: #fff; border: none; padding: 14px 28px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 9px; box-shadow: var(--shadow); transition: background 0.15s, transform 0.1s; }
+  .btn-upload:hover { background: var(--blue-dark); transform: translateY(-1px); }
+  #floorplanInput { display: none; }
 
-  .main { flex: 1; padding: 28px 32px; min-width: 0; }
-  .dashboard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
-  .stat-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow-sm); }
-  .stat-label { font-size: 0.75rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-  .stat-value { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); }
-  .stat-sub { font-size: 0.75rem; color: var(--muted-light); margin-top: 3px; }
+  /* ── CTA SCREEN (two big buttons) ── */
+  #ctaScreen { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100dvh - 66px); padding: 32px 24px; gap: 16px; }
+  .cta-card {
+    width: 100%; max-width: 340px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 18px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s;
+  }
+  .cta-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--blue); }
+  .cta-emoji { font-size: 2.4rem; flex-shrink: 0; }
+  .cta-text h3 { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--navy); margin-bottom: 4px; }
+  .cta-text p { font-size: 0.82rem; color: var(--muted); line-height: 1.45; }
+  .cta-divider { font-size: 0.78rem; color: var(--muted-light); font-weight: 500; }
 
-  .room-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-  .room-title { display: flex; align-items: center; gap: 12px; }
-  .room-title h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--navy); }
-  .room-title .room-emoji { font-size: 1.4rem; }
-  .add-item-actions { display: flex; gap: 10px; }
+  /* ── FLOOR PLAN SCREEN ── */
+  #floorScreen { display: none; flex-direction: column; height: calc(100dvh - 66px); }
+  .floor-toolbar {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    flex-shrink: 0;
+  }
+  .floor-toolbar-left { display: flex; align-items: center; gap: 10px; }
+  .floor-mode-badge { font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .mode-view { background: var(--blue-light); color: var(--blue); }
+  .mode-add { background: var(--amber-bg); color: var(--amber); }
+  .mode-assign { background: var(--purple-bg); color: var(--purple); }
+  .btn-sm { padding: 7px 14px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-mid); background: var(--bg); color: var(--muted); transition: background 0.12s, color 0.12s; display: flex; align-items: center; gap: 6px; }
+  .btn-sm:hover { background: var(--bg-mid); color: var(--text); }
+  .btn-sm.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .btn-sm.primary:hover { background: var(--blue-dark); }
 
-  .btn-primary { background: var(--blue); color: #fff; border: none; padding: 10px 20px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: background 0.15s, transform 0.1s; box-shadow: var(--shadow-sm); }
-  .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
-  .btn-primary:active { transform: translateY(0); }
-  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .floor-wrap { flex: 1; overflow: hidden; position: relative; background: #e8eaf0; }
+  .floor-canvas-wrap { position: relative; width: 100%; height: 100%; overflow: auto; -webkit-overflow-scrolling: touch; display: flex; align-items: center; justify-content: center; }
+  #floorImg { display: block; max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
 
-  .btn-scan { background: var(--navy); color: #fff; border: none; padding: 10px 18px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.15s, transform 0.1s; box-shadow: var(--shadow-sm); }
-  .btn-scan:hover { background: #1a2f5e; transform: translateY(-1px); }
+  /* MARKERS */
+  .marker {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    display: flex; flex-direction: column; align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.15s;
+  }
+  .marker:hover { transform: translate(-50%, -100%) scale(1.1); }
+  .marker-pin {
+    background: var(--blue);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: var(--shadow);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .marker-pin.assign-mode { background: var(--purple); cursor: pointer; animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(109,40,217,0.4); } 50% { box-shadow: 0 0 0 8px rgba(109,40,217,0); } }
+  .marker-tail { width: 2px; height: 10px; background: var(--blue); }
+  .marker-pin.assign-mode + .marker-tail { background: var(--purple); }
+  .marker-dot { width: 8px; height: 8px; background: var(--blue); border-radius: 50%; border: 2px solid #fff; box-shadow: var(--shadow-sm); }
+  .marker-count { font-size: 0.65rem; background: rgba(255,255,255,0.25); padding: 1px 5px; border-radius: 10px; }
 
-  .item-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-  .item-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 10px; transition: box-shadow 0.15s, transform 0.15s; animation: fadeUp 0.2s ease both; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .item-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
-  .item-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-  .item-name { font-weight: 600; font-size: 0.95rem; color: var(--navy); line-height: 1.3; }
-  .item-actions { display: flex; gap: 4px; flex-shrink: 0; }
-  .icon-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: none; border: none; border-radius: 6px; cursor: pointer; color: var(--muted-light); font-size: 0.85rem; transition: background 0.12s, color 0.12s; }
-  .icon-btn:hover { background: var(--bg-mid); color: var(--text); }
-  .icon-btn.del:hover { background: var(--red-bg); color: var(--red); }
-  .item-meta { display: flex; gap: 8px; flex-wrap: wrap; }
-  .badge { font-size: 0.72rem; font-weight: 500; padding: 3px 9px; border-radius: 20px; }
+  /* ADD MARKER hint */
+  .tap-hint { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(13,27,62,0.82); color: #fff; padding: 9px 18px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; backdrop-filter: blur(6px); pointer-events: none; white-space: nowrap; }
+
+  /* ── SLIDE PANEL ── */
+  .panel-overlay { display: none; position: fixed; inset: 0; background: rgba(13,27,62,0.4); z-index: 200; backdrop-filter: blur(2px); }
+  .panel-overlay.open { display: block; }
+  .slide-panel {
+    position: fixed; top: 0; right: -100%; bottom: 0;
+    width: min(400px, 100vw);
+    background: var(--bg);
+    box-shadow: var(--shadow-lg);
+    z-index: 201;
+    display: flex; flex-direction: column;
+    transition: right 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .slide-panel.open { right: 0; }
+  .panel-header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .panel-title { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--navy); }
+  .panel-close { width: 32px; height: 32px; border: none; background: var(--bg-mid); border-radius: 8px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+  .panel-close:hover { background: var(--border); }
+  .panel-body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  .panel-footer { padding: 14px 20px; border-top: 1px solid var(--border); flex-shrink: 0; }
+
+  /* ITEM CARDS in panel */
+  .item-card { background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 10px; display: flex; gap: 12px; animation: fadeUp 0.18s ease both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .item-thumb-sm { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); flex-shrink: 0; }
+  .item-thumb-placeholder { width: 64px; height: 64px; background: var(--bg-mid); border-radius: 8px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+  .item-info { flex: 1; min-width: 0; }
+  .item-name { font-weight: 600; font-size: 0.88rem; color: var(--navy); margin-bottom: 4px; }
+  .item-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
+  .badge { font-size: 0.68rem; font-weight: 500; padding: 2px 7px; border-radius: 20px; }
   .badge-cat { background: var(--blue-light); color: var(--blue); }
   .badge-good { background: var(--green-bg); color: var(--green); }
   .badge-fair { background: var(--amber-bg); color: var(--amber); }
   .badge-needs { background: var(--red-bg); color: var(--red); }
-  .badge-ai { background: var(--purple-bg); color: var(--purple); font-size: 0.68rem; }
-  .item-thumb { width: 100%; height: 130px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border); }
-  .item-value { font-size: 0.82rem; color: var(--muted); }
-  .item-value strong { color: var(--text); font-weight: 600; }
-  .item-notes { font-size: 0.8rem; color: var(--muted); line-height: 1.5; font-style: italic; border-top: 1px solid var(--border); padding-top: 8px; }
+  .badge-ai { background: var(--purple-bg); color: var(--purple); }
+  .item-value { font-size: 0.75rem; color: var(--muted); }
+  .item-notes-text { font-size: 0.75rem; color: var(--muted); font-style: italic; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .item-delete { background: none; border: none; color: var(--muted-light); cursor: pointer; padding: 4px; border-radius: 6px; font-size: 0.85rem; flex-shrink: 0; align-self: flex-start; }
+  .item-delete:hover { background: var(--red-bg); color: var(--red); }
+  .panel-empty { text-align: center; padding: 40px 20px; color: var(--muted); }
+  .panel-empty .pe-icon { font-size: 2.5rem; opacity: 0.3; margin-bottom: 10px; }
+  .panel-empty p { font-size: 0.85rem; }
 
-  .empty { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--muted); }
-  .empty-icon { font-size: 3rem; margin-bottom: 14px; opacity: 0.4; }
-  .empty h3 { font-family: 'DM Serif Display', serif; color: var(--navy); margin-bottom: 6px; }
-  .empty p { font-size: 0.88rem; }
+  /* ── SCAN SCREEN ── */
+  #scanScreen { display: none; flex-direction: column; min-height: calc(100dvh - 66px); }
+  .scan-step { display: none; flex-direction: column; flex: 1; }
+  .scan-step.active { display: flex; }
 
-  .overlay { display: none; position: fixed; inset: 0; background: rgba(13,27,62,0.5); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
-  .overlay.open { display: flex; }
-  .modal { background: var(--bg); border-radius: var(--radius); padding: 28px 30px; width: 100%; max-width: 500px; box-shadow: var(--shadow-md); animation: modalIn 0.2s ease; max-height: 92vh; overflow-y: auto; }
-  @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-  .modal h3 { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--navy); margin-bottom: 20px; }
+  /* Step 1: Camera */
+  .scan-camera-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; gap: 16px; }
+  .camera-box { width: 100%; max-width: 400px; border: 2px dashed var(--border-mid); border-radius: var(--radius); background: var(--bg); overflow: hidden; position: relative; min-height: 240px; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+  .camera-box.has-photo { border-style: solid; border-color: var(--blue); min-height: unset; }
+  .camera-placeholder-inner { text-align: center; padding: 32px 20px; }
+  .cam-big-icon { font-size: 3rem; opacity: 0.3; margin-bottom: 12px; }
+  .camera-placeholder-inner p { font-size: 0.85rem; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+  #scanCanvas { width: 100%; display: none; border-radius: calc(var(--radius) - 2px); }
+  .retake-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 5px 12px; border-radius: 20px; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500; cursor: pointer; }
+  #scanInput { display: none; }
 
-  /* CAMERA */
-  .camera-zone { border: 2px dashed var(--border-mid); border-radius: var(--radius); margin-bottom: 20px; background: var(--bg-soft); transition: border-color 0.15s; position: relative; overflow: hidden; }
-  .camera-zone.has-photo { border-style: solid; border-color: var(--blue); }
-  .camera-placeholder { padding: 28px 20px; text-align: center; }
-  .cam-icon { font-size: 2.5rem; margin-bottom: 10px; opacity: 0.45; }
-  .camera-placeholder p { font-size: 0.82rem; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
-  .btn-camera { background: var(--navy); color: #fff; border: none; padding: 11px 22px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.15s; }
-  .btn-camera:hover { background: #1a2f5e; }
-  #cameraPreview { width: 100%; max-height: 210px; object-fit: cover; display: none; }
-  #cameraCanvas { width: 100%; max-height: 210px; object-fit: cover; display: none; border-radius: calc(var(--radius) - 2px); }
-  .camera-retake { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 5px 12px; border-radius: 20px; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500; cursor: pointer; backdrop-filter: blur(4px); display: none; }
-  #cameraInput { display: none; }
-
-  /* AI STATUS */
-  .ai-status { display: none; align-items: center; gap: 10px; background: var(--purple-bg); border: 1px solid var(--purple-border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 16px; font-size: 0.83rem; color: var(--purple); }
-  .ai-status.visible { display: flex; }
-  .ai-status.success { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+  /* AI status bar */
+  .ai-bar { display: none; align-items: center; gap: 10px; background: var(--purple-bg); border: 1px solid var(--purple-border); border-radius: var(--radius-sm); padding: 11px 14px; margin: 0 24px; font-size: 0.83rem; color: var(--purple); }
+  .ai-bar.visible { display: flex; }
+  .ai-bar.success { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
   .ai-spinner { width: 15px; height: 15px; border: 2px solid var(--purple-border); border-top-color: var(--purple); border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
-  .ai-status.success .ai-spinner { display: none; }
+  .ai-bar.success .ai-spinner { display: none; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* FORM */
-  .form-row { margin-bottom: 14px; }
-  .form-row label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
-  .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border-mid); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text); background: var(--bg); transition: border-color 0.15s; outline: none; }
+  /* Result card */
+  .result-card { margin: 16px 24px 0; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: none; }
+  .result-card.visible { display: block; }
+  .result-card h4 { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 10px; }
+  .result-name { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: 8px; }
+  .result-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .result-notes { font-size: 0.8rem; color: var(--muted); font-style: italic; line-height: 1.5; }
+  .result-value { font-size: 0.82rem; color: var(--muted); margin-top: 6px; }
+  .result-value strong { color: var(--text); }
+  .edit-result-link { font-size: 0.78rem; color: var(--blue); cursor: pointer; text-decoration: underline; margin-top: 6px; display: inline-block; }
+
+  /* Editable fields (hidden by default) */
+  .edit-fields { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .edit-fields.open { display: block; }
+  .form-row { margin-bottom: 10px; }
+  .form-row label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 9px 11px; border: 1px solid var(--border-mid); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.15s; }
   .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,86,219,0.1); }
-  .form-row textarea { resize: vertical; min-height: 68px; }
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
-  .btn-cancel { padding: 9px 18px; border: 1px solid var(--border-mid); background: none; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--muted); cursor: pointer; transition: background 0.12s; }
+  .form-row textarea { resize: vertical; min-height: 60px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  .scan-actions { padding: 16px 24px; display: flex; gap: 10px; flex-shrink: 0; }
+  .btn-primary { background: var(--blue); color: #fff; border: none; padding: 12px 22px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; flex: 1; transition: background 0.15s; }
+  .btn-primary:hover { background: var(--blue-dark); }
+  .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+  .btn-secondary { background: var(--bg); color: var(--muted); border: 1px solid var(--border-mid); padding: 12px 18px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.12s; }
+  .btn-secondary:hover { background: var(--bg-soft); }
+
+  /* Step 2: Assign room (floor plan) */
+  .assign-header { padding: 16px 20px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .assign-header h3 { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--navy); }
+  .assign-header p { font-size: 0.82rem; color: var(--muted); margin-top: 3px; }
+  .assign-floor-wrap { flex: 1; overflow: auto; position: relative; background: #e8eaf0; display: flex; align-items: center; justify-content: center; }
+  #assignFloorImg { max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; }
+  .assign-actions { padding: 14px 20px; border-top: 1px solid var(--border); flex-shrink: 0; }
+
+  /* ── OVERLAY / MODALS ── */
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(13,27,62,0.5); backdrop-filter: blur(4px); z-index: 300; align-items: center; justify-content: center; padding: 20px; }
+  .overlay.open { display: flex; }
+  .modal { background: var(--bg); border-radius: var(--radius); padding: 26px 28px; width: 100%; max-width: 360px; box-shadow: var(--shadow-lg); animation: modalIn 0.2s ease; }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .modal h3 { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--navy); margin-bottom: 14px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+  .btn-cancel { padding: 9px 16px; border: 1px solid var(--border-mid); background: none; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
   .btn-cancel:hover { background: var(--bg-soft); }
+  .btn-save { background: var(--blue); color: #fff; border: none; padding: 9px 20px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+  .btn-save:hover { background: var(--blue-dark); }
 
-  /* EMOJI PICKER */
-  .emoji-picker { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-  .emoji-opt { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border-radius: 8px; border: 2px solid transparent; cursor: pointer; background: var(--bg-soft); transition: border-color 0.12s, background 0.12s; }
-  .emoji-opt:hover, .emoji-opt.selected { border-color: var(--blue); background: var(--blue-light); }
+  /* TOAST */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--navy); color: #fff; padding: 11px 22px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; z-index: 500; box-shadow: var(--shadow-md); opacity: 0; transition: transform 0.25s, opacity 0.25s; white-space: nowrap; }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--navy); color: #fff; padding: 12px 20px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 500; z-index: 500; box-shadow: var(--shadow-md); transform: translateY(80px); opacity: 0; transition: transform 0.25s, opacity 0.25s; }
-  .toast.show { transform: translateY(0); opacity: 1; }
-
-  @media (max-width: 768px) {
-    .app { flex-direction: column; }
-    .sidebar { width: 100%; height: auto; position: static; display: flex; flex-wrap: wrap; padding: 10px 12px; gap: 6px; border-right: none; border-bottom: 1px solid var(--border); }
-    .sidebar-label, .sidebar-divider, .add-room-btn { display: none; }
-    .room-btn { width: auto; padding: 7px 12px; border-radius: 20px; border: 1px solid var(--border); font-size: 0.8rem; }
-    .room-btn.active::before { display: none; }
-    .dashboard { grid-template-columns: repeat(2, 1fr); }
-    .main { padding: 16px; }
-    header { padding: 14px 16px; }
-    .header-actions .btn-ghost span { display: none; }
-    .btn-primary, .btn-scan { padding: 9px 14px; font-size: 0.8rem; }
-  }
+  /* STATS bar */
+  .stats-bar { display: flex; gap: 6px; padding: 8px 16px; background: var(--bg); border-bottom: 1px solid var(--border); overflow-x: auto; flex-shrink: 0; }
+  .stat-pill { font-size: 0.75rem; font-weight: 500; padding: 4px 12px; border-radius: 20px; background: var(--bg-mid); color: var(--muted); white-space: nowrap; }
+  .stat-pill strong { color: var(--navy); }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-left">
+  <div class="header-brand">
     <div class="header-icon">🏠</div>
     <div>
       <h1>Home Inventory</h1>
-      <p>258 Delmar Way · San Mateo, CA</p>
+      <p id="headerSub">258 Delmar Way</p>
     </div>
-  </div>
-  <div class="header-actions">
-    <button class="btn-ghost" onclick="exportCSV()">⬇ <span>CSV</span></button>
-    <button class="btn-ghost" onclick="exportJSON()">⬇ <span>JSON</span></button>
   </div>
 </header>
 
-<div class="app">
-  <nav class="sidebar" id="sidebar">
-    <div class="sidebar-label">Rooms</div>
-    <div id="roomList"></div>
-    <hr class="sidebar-divider">
-    <button class="add-room-btn" onclick="openAddRoom()">＋ Add Room</button>
-  </nav>
+<!-- ══ ZERO STATE ══ -->
+<div id="homeScreen">
+  <div class="zero-state" id="zeroState">
+    <div class="zero-icon">🏡</div>
+    <h2>Start with your floor plan</h2>
+    <p>Upload an image of your home's floor plan. You'll place room markers on it, then scan items to each room.</p>
+    <button class="btn-upload" onclick="document.getElementById('floorplanInput').click()">
+      📐 Upload Floor Plan
+    </button>
+    <input type="file" id="floorplanInput" accept="image/*">
+  </div>
 
-  <main class="main">
-    <div class="dashboard">
-      <div class="stat-card"><div class="stat-label">Total Items</div><div class="stat-value" id="statTotal">0</div><div class="stat-sub">across all rooms</div></div>
-      <div class="stat-card"><div class="stat-label">Est. Value</div><div class="stat-value" id="statValue">$0</div><div class="stat-sub">combined estimate</div></div>
-      <div class="stat-card"><div class="stat-label">Rooms</div><div class="stat-value" id="statRooms">0</div><div class="stat-sub">catalogued</div></div>
-      <div class="stat-card"><div class="stat-label">Need Attention</div><div class="stat-value" id="statAttention">0</div><div class="stat-sub">items flagged</div></div>
-    </div>
-
-    <div class="room-header">
-      <div class="room-title">
-        <span class="room-emoji" id="activeEmoji">🏠</span>
-        <h2 id="activeRoomName">Select a Room</h2>
-      </div>
-      <div class="add-item-actions">
-        <button class="btn-scan" onclick="openScanItem()">📷 Scan Item</button>
-        <button class="btn-primary" onclick="openAddItem()">＋ Manual</button>
+  <!-- CTA screen (shown after floor plan exists) -->
+  <div id="ctaScreen" style="display:none; flex-direction:column; align-items:center; gap:16px; width:100%; max-width:400px;">
+    <div class="cta-card" onclick="goToFloor()">
+      <div class="cta-emoji">🗺️</div>
+      <div class="cta-text">
+        <h3>View Items</h3>
+        <p>Browse your floor plan, tap a room to see everything inside it.</p>
       </div>
     </div>
-    <div class="item-grid" id="itemGrid"></div>
-  </main>
-</div>
-
-<!-- ITEM MODAL -->
-<div class="overlay" id="itemModal">
-  <div class="modal">
-    <h3 id="modalTitle">Add Item</h3>
-
-    <div class="camera-zone" id="cameraZone" style="display:none">
-      <div class="camera-placeholder" id="cameraPlaceholder">
-        <div class="cam-icon">📷</div>
-        <p>Point at the item or its barcode.<br>AI will identify and fill in the details.</p>
-        <button class="btn-camera" onclick="triggerCamera()">📸 Take Photo</button>
+    <div class="cta-divider">or</div>
+    <div class="cta-card" onclick="goToScan()">
+      <div class="cta-emoji">📷</div>
+      <div class="cta-text">
+        <h3>Scan an Item</h3>
+        <p>Take a photo — AI identifies it, then you assign it to a room.</p>
       </div>
-      <canvas id="cameraCanvas"></canvas>
-      <img id="cameraPreview" alt="Item photo" style="display:none">
-      <button class="camera-retake" id="retakeBtn" onclick="retakePhoto()">↩ Retake</button>
-    </div>
-    <input type="file" id="cameraInput" accept="image/*" capture="environment">
-
-    <div class="ai-status" id="aiStatus">
-      <div class="ai-spinner"></div>
-      <span id="aiStatusText">Analyzing with AI…</span>
-    </div>
-
-    <div class="form-row">
-      <label>Item Name *</label>
-      <input type="text" id="fName" placeholder="e.g. Samsung 65″ QLED TV">
-    </div>
-    <div class="form-grid">
-      <div class="form-row">
-        <label>Category</label>
-        <select id="fCat">
-          <option value="Furniture">Furniture</option>
-          <option value="Electronics">Electronics</option>
-          <option value="Appliance">Appliance</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label>Condition</label>
-        <select id="fCondition">
-          <option value="Good">Good</option>
-          <option value="Fair">Fair</option>
-          <option value="Needs Attention">Needs Attention</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-row">
-      <label>Estimated Value ($)</label>
-      <input type="number" id="fValue" placeholder="Optional">
-    </div>
-    <div class="form-row">
-      <label>Notes</label>
-      <textarea id="fNotes" placeholder="Model, serial number, color, purchase year…"></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeItemModal()">Cancel</button>
-      <button class="btn-primary" id="saveBtn" onclick="saveItem()">Save Item</button>
     </div>
   </div>
 </div>
 
-<!-- ADD ROOM MODAL -->
+<!-- ══ FLOOR PLAN SCREEN ══ -->
+<div id="floorScreen">
+  <div class="floor-toolbar">
+    <div class="floor-toolbar-left">
+      <button class="btn-sm" onclick="goHome()">← Home</button>
+      <span class="floor-mode-badge mode-view" id="modeBadge">View Mode</span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-sm" id="addRoomBtn" onclick="toggleAddMode()">＋ Add Room</button>
+      <button class="btn-sm" onclick="exportCSV()">⬇ CSV</button>
+    </div>
+  </div>
+  <div class="stats-bar" id="statsBar"></div>
+  <div class="floor-wrap">
+    <div class="floor-canvas-wrap" id="floorCanvasWrap">
+      <img id="floorImg" alt="Floor plan">
+      <div id="markersLayer" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></div>
+    </div>
+    <div class="tap-hint" id="tapHint" style="display:none">Tap anywhere to place a room marker</div>
+  </div>
+</div>
+
+<!-- ══ SCAN SCREEN ══ -->
+<div id="scanScreen">
+  <!-- Step 1: Photo + AI -->
+  <div class="scan-step active" id="scanStep1">
+    <div class="scan-camera-area">
+      <div class="camera-box" id="cameraBox">
+        <div class="camera-placeholder-inner" id="camPlaceholder">
+          <div class="cam-big-icon">📷</div>
+          <p>Point at the item or its barcode.<br>AI will identify it automatically.</p>
+          <button class="btn-upload" onclick="document.getElementById('scanInput').click()" style="font-size:0.85rem;padding:11px 22px;">📸 Take Photo</button>
+        </div>
+        <canvas id="scanCanvas"></canvas>
+        <button class="retake-btn" id="retakeBtn" style="display:none" onclick="retakeScan()">↩ Retake</button>
+      </div>
+    </div>
+
+    <div class="ai-bar" id="aiBar">
+      <div class="ai-spinner"></div>
+      <span id="aiBarText">Analyzing with AI…</span>
+    </div>
+
+    <div class="result-card" id="resultCard">
+      <h4>AI Identified</h4>
+      <div class="result-name" id="resultName">—</div>
+      <div class="result-meta" id="resultMeta"></div>
+      <div class="result-value" id="resultValue"></div>
+      <div class="result-notes" id="resultNotes"></div>
+      <span class="edit-result-link" onclick="toggleEditFields()">✏️ Edit details</span>
+      <div class="edit-fields" id="editFields">
+        <div class="form-row"><label>Name</label><input type="text" id="fName"></div>
+        <div class="form-grid">
+          <div class="form-row"><label>Category</label><select id="fCat"><option>Furniture</option><option>Electronics</option><option>Appliance</option><option>Other</option></select></div>
+          <div class="form-row"><label>Condition</label><select id="fCondition"><option>Good</option><option>Fair</option><option>Needs Attention</option></select></div>
+        </div>
+        <div class="form-row"><label>Est. Value ($)</label><input type="number" id="fValue"></div>
+        <div class="form-row"><label>Notes</label><textarea id="fNotes"></textarea></div>
+      </div>
+    </div>
+
+    <input type="file" id="scanInput" accept="image/*" capture="environment">
+
+    <div class="scan-actions">
+      <button class="btn-secondary" onclick="goHome()">Cancel</button>
+      <button class="btn-primary" id="nextBtn" onclick="goToAssign()" disabled>Assign to Room →</button>
+    </div>
+  </div>
+
+  <!-- Step 2: Assign to room -->
+  <div class="scan-step" id="scanStep2">
+    <div class="assign-header">
+      <h3>Which room?</h3>
+      <p>Tap a room marker on the floor plan to assign this item.</p>
+    </div>
+    <div class="assign-floor-wrap" id="assignFloorWrap">
+      <img id="assignFloorImg" alt="Floor plan">
+      <div id="assignMarkersLayer" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></div>
+    </div>
+    <div class="assign-actions">
+      <button class="btn-secondary" onclick="backToScan()" style="width:100%">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANEL OVERLAY ══ -->
+<div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
+<div class="slide-panel" id="slidePanel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title" id="panelTitle">Room</div>
+      <div style="font-size:0.75rem;color:var(--muted);margin-top:2px;" id="panelSub"></div>
+    </div>
+    <button class="panel-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="panel-body" id="panelBody"></div>
+  <div class="panel-footer">
+    <button class="btn-sm primary" style="width:100%;justify-content:center;" onclick="closePanel();goToScan()">📷 Scan Item to This Room</button>
+  </div>
+</div>
+
+<!-- ══ ADD ROOM MODAL ══ -->
 <div class="overlay" id="roomModal">
   <div class="modal">
-    <h3>Add a Room</h3>
+    <h3>Name this room</h3>
     <div class="form-row">
-      <label>Room Name *</label>
-      <input type="text" id="rName" placeholder="e.g. Guest Bedroom">
-    </div>
-    <div class="form-row">
-      <label>Pick an Icon</label>
-      <div class="emoji-picker" id="emojiPicker"></div>
+      <label>Room Name</label>
+      <input type="text" id="rName" placeholder="e.g. Living Room">
     </div>
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeRoomModal()">Cancel</button>
-      <button class="btn-primary" onclick="saveRoom()">Add Room</button>
+      <button class="btn-cancel" onclick="cancelAddRoom()">Cancel</button>
+      <button class="btn-save" onclick="confirmAddRoom()">Place Marker</button>
     </div>
   </div>
 </div>
@@ -306,183 +426,340 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG ─────────────────────────────────────────────────────────────────
+// ── STATE ──────────────────────────────────────────────────────────────────
 let ANTHROPIC_KEY = localStorage.getItem('hi_apikey') || '';
+let floorplanDataUrl = localStorage.getItem('hi_floor') || null;
+let rooms = JSON.parse(localStorage.getItem('hi_rooms') || '[]');
+// room: { id, name, x, y }  — x/y as % of image natural size
+let items = JSON.parse(localStorage.getItem('hi_items') || '[]');
+// item: { id, roomId, name, cat, condition, value, notes, thumb, aiIdentified }
 
-const DEFAULT_ROOMS = [
-  { id: 'living',  name: 'Living Room',    emoji: '🛋️' },
-  { id: 'kitchen', name: 'Kitchen',        emoji: '🍳' },
-  { id: 'master',  name: 'Master Bedroom', emoji: '🛏️' },
-  { id: 'office',  name: 'Home Office',    emoji: '💻' },
-  { id: 'garage',  name: 'Garage',         emoji: '🚗' },
-  { id: 'dining',  name: 'Dining Room',    emoji: '🪑' },
-];
-const EMOJIS = ['🛋️','🛏️','🍳','💻','🚗','🪑','📺','🛁','🏋️','📚','🎸','🌿','🎨','🧸','🧺','🪴'];
+let addMode = false;
+let pendingMarkerPct = null; // {x%, y%} waiting for room name
+let pendingItem = null;      // item being built in scan flow
+let scanB64 = null;
+let aiRunning = false;
+let activePanelRoomId = null;
+let lastAssignedRoomId = null; // remember last room for "scan to this room"
 
-let rooms = [], items = [], activeRoom = null;
-let editingItemId = null, selectedEmoji = EMOJIS[0];
-let isScanMode = false, capturedB64 = null, aiRunning = false;
-
-// ── STORAGE ────────────────────────────────────────────────────────────────
-function load() {
-  rooms = JSON.parse(localStorage.getItem('hi_rooms') || 'null') || DEFAULT_ROOMS.map(r => ({...r}));
-  items = JSON.parse(localStorage.getItem('hi_items') || '[]');
-  if (!activeRoom && rooms.length) activeRoom = rooms[0].id;
-}
-function save() {
+// ── PERSIST ────────────────────────────────────────────────────────────────
+function saveAll() {
   localStorage.setItem('hi_rooms', JSON.stringify(rooms));
   localStorage.setItem('hi_items', JSON.stringify(items));
 }
 
-// ── RENDER ─────────────────────────────────────────────────────────────────
-function render() { save(); renderSidebar(); renderItems(); renderStats(); }
+// ── INIT ───────────────────────────────────────────────────────────────────
+function init() {
+  if (floorplanDataUrl) showCTAs();
+  document.getElementById('floorplanInput').addEventListener('change', onFloorplanUpload);
+  document.getElementById('scanInput').addEventListener('change', onScanPhoto);
+}
 
-function renderSidebar() {
-  const list = document.getElementById('roomList');
-  list.innerHTML = '';
-  rooms.forEach(r => {
-    const count = items.filter(i => i.room === r.id).length;
-    const btn = document.createElement('button');
-    btn.className = 'room-btn' + (r.id === activeRoom ? ' active' : '');
-    btn.innerHTML = `<span class="room-icon">${r.emoji}</span>${r.name}<span class="room-count">${count}</span>`;
-    btn.onclick = () => { activeRoom = r.id; render(); };
-    list.appendChild(btn);
+// ── SCREENS ────────────────────────────────────────────────────────────────
+function showCTAs() {
+  document.getElementById('zeroState').style.display = 'none';
+  document.getElementById('ctaScreen').style.display = 'flex';
+}
+
+function goHome() {
+  hide('floorScreen'); hide('scanScreen');
+  show('homeScreen');
+  if (floorplanDataUrl) showCTAs();
+  resetScan();
+}
+
+function goToFloor() {
+  hide('homeScreen'); hide('scanScreen');
+  show('floorScreen');
+  renderFloor();
+}
+
+function goToScan() {
+  hide('homeScreen'); hide('floorScreen');
+  closePanel();
+  show('scanScreen');
+  showStep(1);
+}
+
+function goToAssign() {
+  showStep(2);
+  renderAssignFloor();
+}
+
+function backToScan() { showStep(1); }
+
+function showStep(n) {
+  document.querySelectorAll('.scan-step').forEach((el,i) => {
+    el.classList.toggle('active', i === n-1);
   });
 }
 
-function renderItems() {
-  const room = rooms.find(r => r.id === activeRoom);
-  document.getElementById('activeRoomName').textContent = room ? room.name : 'Select a Room';
-  document.getElementById('activeEmoji').textContent = room ? room.emoji : '🏠';
-  const grid = document.getElementById('itemGrid');
-  const roomItems = items.filter(i => i.room === activeRoom);
-  grid.innerHTML = '';
-  if (!roomItems.length) {
-    grid.innerHTML = `<div class="empty"><div class="empty-icon">📦</div><h3>No items yet</h3><p>Tap "📷 Scan Item" to photograph something, or "+ Manual" to type it in.</p></div>`;
-    return;
-  }
-  roomItems.forEach(item => {
-    const condClass = item.condition === 'Good' ? 'badge-good' : item.condition === 'Fair' ? 'badge-fair' : 'badge-needs';
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    card.innerHTML = `
-      ${item.thumb ? `<img class="item-thumb" src="${item.thumb}" alt="${esc(item.name)}">` : ''}
-      <div class="item-card-top">
-        <div class="item-name">${esc(item.name)}</div>
-        <div class="item-actions">
-          <button class="icon-btn" onclick="editItem('${item.id}')" title="Edit">✏️</button>
-          <button class="icon-btn del" onclick="deleteItem('${item.id}')" title="Delete">🗑️</button>
-        </div>
-      </div>
-      <div class="item-meta">
-        <span class="badge badge-cat">${esc(item.cat)}</span>
-        <span class="badge ${condClass}">${esc(item.condition)}</span>
-        ${item.aiIdentified ? '<span class="badge badge-ai">✦ AI</span>' : ''}
-      </div>
-      ${item.value ? `<div class="item-value">Est. value: <strong>$${Number(item.value).toLocaleString()}</strong></div>` : ''}
-      ${item.notes ? `<div class="item-notes">${esc(item.notes)}</div>` : ''}
-    `;
-    grid.appendChild(card);
+function show(id) { document.getElementById(id).style.display = 'flex'; }
+function hide(id) { document.getElementById(id).style.display = 'none'; }
+
+// ── FLOOR PLAN UPLOAD ──────────────────────────────────────────────────────
+function onFloorplanUpload(e) {
+  const file = e.target.files[0]; if (!file) return;
+  e.target.value = '';
+  compressImage(file, 1600, 0.88).then(dataUrl => {
+    floorplanDataUrl = dataUrl;
+    localStorage.setItem('hi_floor', dataUrl);
+    showCTAs();
+    toast('Floor plan saved!');
   });
+}
+
+// ── FLOOR SCREEN ───────────────────────────────────────────────────────────
+function renderFloor() {
+  const img = document.getElementById('floorImg');
+  img.src = floorplanDataUrl;
+  img.onload = () => placeAllMarkers(false);
+  if (img.complete) placeAllMarkers(false);
+  renderStats();
+
+  const wrap = document.getElementById('floorCanvasWrap');
+  wrap.onclick = onFloorClick;
 }
 
 function renderStats() {
-  document.getElementById('statTotal').textContent = items.length;
-  document.getElementById('statValue').textContent = '$' + items.reduce((s,i) => s + (Number(i.value)||0), 0).toLocaleString();
-  document.getElementById('statRooms').textContent = rooms.length;
-  document.getElementById('statAttention').textContent = items.filter(i => i.condition === 'Needs Attention').length;
+  const bar = document.getElementById('statsBar');
+  const totalItems = items.length;
+  const totalVal = items.reduce((s,i) => s + (Number(i.value)||0), 0);
+  bar.innerHTML = `
+    <span class="stat-pill"><strong>${rooms.length}</strong> rooms</span>
+    <span class="stat-pill"><strong>${totalItems}</strong> items</span>
+    ${totalVal ? `<span class="stat-pill">Est. <strong>$${totalVal.toLocaleString()}</strong></span>` : ''}
+  `;
 }
 
-// ── CAMERA ─────────────────────────────────────────────────────────────────
-function triggerCamera() { document.getElementById('cameraInput').click(); }
+function placeAllMarkers(assignMode) {
+  const layer = document.getElementById(assignMode ? 'assignMarkersLayer' : 'markersLayer');
+  const img = document.getElementById(assignMode ? 'assignFloorImg' : 'floorImg');
+  layer.innerHTML = '';
 
-document.getElementById('cameraInput').addEventListener('change', async function() {
-  const file = this.files[0];
-  if (!file) return;
-  this.value = '';
-  // Compress image before sending
-  const compressed = await compressImage(file, 1024, 0.82);
-  capturedB64 = compressed.split(',')[1];
-  showPreview(compressed);
-  await runAI();
-});
+  // Get rendered image bounds within its container
+  const imgRect = img.getBoundingClientRect();
+  const wrapRect = img.parentElement.getBoundingClientRect();
+  const offsetX = imgRect.left - wrapRect.left;
+  const offsetY = imgRect.top - wrapRect.top;
 
-function compressImage(file, maxDim, quality) {
-  return new Promise(resolve => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = new Image();
-      img.onload = () => {
-        let { width: w, height: h } = img;
-        if (w > maxDim || h > maxDim) {
-          if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
-          else { w = Math.round(w * maxDim / h); h = maxDim; }
-        }
-        const canvas = document.getElementById('cameraCanvas');
-        canvas.width = w; canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL('image/jpeg', quality));
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+  rooms.forEach(r => {
+    const px = offsetX + r.x * imgRect.width;
+    const py = offsetY + r.y * imgRect.height;
+    const count = items.filter(i => i.roomId === r.id).length;
+
+    const marker = document.createElement('div');
+    marker.className = 'marker';
+    marker.style.left = px + 'px';
+    marker.style.top = py + 'px';
+    marker.style.pointerEvents = 'auto';
+
+    const pin = document.createElement('div');
+    pin.className = 'marker-pin' + (assignMode ? ' assign-mode' : '');
+    pin.innerHTML = `${r.name}${count ? ` <span class="marker-count">${count}</span>` : ''}`;
+
+    const tail = document.createElement('div');
+    tail.className = 'marker-tail';
+    const dot = document.createElement('div');
+    dot.className = 'marker-dot';
+
+    marker.appendChild(pin);
+    marker.appendChild(tail);
+    marker.appendChild(dot);
+
+    if (assignMode) {
+      marker.onclick = () => assignItemToRoom(r.id);
+    } else {
+      marker.onclick = (e) => { e.stopPropagation(); openPanel(r.id); };
+    }
+    layer.appendChild(marker);
   });
 }
 
-function showPreview(dataUrl) {
-  const zone = document.getElementById('cameraZone');
-  const ph = document.getElementById('cameraPlaceholder');
-  const canvas = document.getElementById('cameraCanvas');
+// ── ADD ROOM MARKERS ───────────────────────────────────────────────────────
+function toggleAddMode() {
+  addMode = !addMode;
+  const badge = document.getElementById('modeBadge');
+  const btn = document.getElementById('addRoomBtn');
+  const hint = document.getElementById('tapHint');
+  if (addMode) {
+    badge.textContent = 'Add Room Mode';
+    badge.className = 'floor-mode-badge mode-add';
+    btn.textContent = '✕ Done Adding';
+    btn.classList.add('primary');
+    hint.style.display = 'block';
+  } else {
+    badge.textContent = 'View Mode';
+    badge.className = 'floor-mode-badge mode-view';
+    btn.textContent = '＋ Add Room';
+    btn.classList.remove('primary');
+    hint.style.display = 'none';
+  }
+}
+
+function onFloorClick(e) {
+  if (!addMode) return;
+  const img = document.getElementById('floorImg');
+  const imgRect = img.getBoundingClientRect();
+
+  // Only if click is within the image bounds
+  if (e.clientX < imgRect.left || e.clientX > imgRect.right ||
+      e.clientY < imgRect.top  || e.clientY > imgRect.bottom) return;
+
+  const xPct = (e.clientX - imgRect.left) / imgRect.width;
+  const yPct = (e.clientY - imgRect.top)  / imgRect.height;
+  pendingMarkerPct = { x: xPct, y: yPct };
+
+  document.getElementById('rName').value = '';
+  document.getElementById('roomModal').classList.add('open');
+  setTimeout(() => document.getElementById('rName').focus(), 60);
+}
+
+function confirmAddRoom() {
+  const name = document.getElementById('rName').value.trim();
+  if (!name) { document.getElementById('rName').focus(); return; }
+  const room = { id: uid(), name, x: pendingMarkerPct.x, y: pendingMarkerPct.y };
+  rooms.push(room);
+  saveAll();
+  document.getElementById('roomModal').classList.remove('open');
+  pendingMarkerPct = null;
+  placeAllMarkers(false);
+  renderStats();
+  toast(`"${name}" marker placed`);
+}
+
+function cancelAddRoom() {
+  pendingMarkerPct = null;
+  document.getElementById('roomModal').classList.remove('open');
+}
+
+// ── PANEL ──────────────────────────────────────────────────────────────────
+function openPanel(roomId) {
+  const room = rooms.find(r => r.id === roomId); if (!room) return;
+  activePanelRoomId = roomId;
+  const roomItems = items.filter(i => i.roomId === roomId);
+
+  document.getElementById('panelTitle').textContent = room.name;
+  document.getElementById('panelSub').textContent = `${roomItems.length} item${roomItems.length !== 1 ? 's' : ''}`;
+
+  const body = document.getElementById('panelBody');
+  if (!roomItems.length) {
+    body.innerHTML = `<div class="panel-empty"><div class="pe-icon">📦</div><p>No items yet. Scan something to add it here.</p></div>`;
+  } else {
+    body.innerHTML = '';
+    roomItems.forEach(item => {
+      const condClass = item.condition === 'Good' ? 'badge-good' : item.condition === 'Fair' ? 'badge-fair' : 'badge-needs';
+      const card = document.createElement('div');
+      card.className = 'item-card';
+      card.innerHTML = `
+        ${item.thumb
+          ? `<img class="item-thumb-sm" src="${item.thumb}" alt="${esc(item.name)}">`
+          : `<div class="item-thumb-placeholder">${item.cat === 'Electronics' ? '📺' : item.cat === 'Appliance' ? '🔌' : '🛋️'}</div>`}
+        <div class="item-info">
+          <div class="item-name">${esc(item.name)}</div>
+          <div class="item-meta">
+            <span class="badge badge-cat">${esc(item.cat)}</span>
+            <span class="badge ${condClass}">${esc(item.condition)}</span>
+            ${item.aiIdentified ? '<span class="badge badge-ai">✦ AI</span>' : ''}
+          </div>
+          ${item.value ? `<div class="item-value">Est. $${Number(item.value).toLocaleString()}</div>` : ''}
+          ${item.notes ? `<div class="item-notes-text">${esc(item.notes)}</div>` : ''}
+        </div>
+        <button class="item-delete" onclick="deleteItem('${item.id}')" title="Remove">🗑</button>
+      `;
+      body.appendChild(card);
+    });
+  }
+
+  document.getElementById('panelOverlay').classList.add('open');
+  document.getElementById('slidePanel').classList.add('open');
+}
+
+function closePanel() {
+  document.getElementById('panelOverlay').classList.remove('open');
+  document.getElementById('slidePanel').classList.remove('open');
+  activePanelRoomId = null;
+}
+
+function deleteItem(id) {
+  if (!confirm('Remove this item?')) return;
+  items = items.filter(i => i.id !== id);
+  saveAll();
+  if (activePanelRoomId) openPanel(activePanelRoomId); // refresh panel
+  placeAllMarkers(false);
+  renderStats();
+  toast('Item removed');
+}
+
+// ── SCAN FLOW ──────────────────────────────────────────────────────────────
+function onScanPhoto(e) {
+  const file = e.target.files[0]; if (!file) return;
+  e.target.value = '';
+  compressImage(file, 1024, 0.82).then(dataUrl => {
+    scanB64 = dataUrl.split(',')[1];
+    showScanPreview(dataUrl);
+    runAI();
+  });
+}
+
+function showScanPreview(dataUrl) {
+  const box = document.getElementById('cameraBox');
+  const ph = document.getElementById('camPlaceholder');
+  const canvas = document.getElementById('scanCanvas');
   const retake = document.getElementById('retakeBtn');
-  zone.classList.add('has-photo');
+
+  const img = new Image();
+  img.onload = () => {
+    canvas.width = img.width; canvas.height = img.height;
+    canvas.getContext('2d').drawImage(img, 0, 0);
+    canvas.style.display = 'block';
+  };
+  img.src = dataUrl;
+
+  box.classList.add('has-photo');
   ph.style.display = 'none';
-  canvas.style.display = 'block';
   retake.style.display = 'block';
 }
 
-function retakePhoto() {
-  capturedB64 = null;
-  const zone = document.getElementById('cameraZone');
-  const ph = document.getElementById('cameraPlaceholder');
-  const canvas = document.getElementById('cameraCanvas');
-  const retake = document.getElementById('retakeBtn');
-  zone.classList.remove('has-photo');
-  ph.style.display = '';
-  canvas.style.display = 'none';
-  canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-  retake.style.display = 'none';
-  hideAiStatus();
-  clearForm();
+function retakeScan() {
+  scanB64 = null; aiRunning = false; pendingItem = null;
+  document.getElementById('cameraBox').classList.remove('has-photo');
+  document.getElementById('camPlaceholder').style.display = '';
+  document.getElementById('scanCanvas').style.display = 'none';
+  document.getElementById('retakeBtn').style.display = 'none';
+  document.getElementById('scanCanvas').getContext('2d').clearRect(0,0,9999,9999);
+  hideAiBar();
+  document.getElementById('resultCard').classList.remove('visible');
+  document.getElementById('nextBtn').disabled = true;
 }
 
-// ── AI ─────────────────────────────────────────────────────────────────────
+function resetScan() {
+  retakeScan();
+  document.getElementById('editFields').classList.remove('open');
+}
+
 async function runAI() {
-  if (!capturedB64) return;
+  if (!scanB64) return;
   if (!ANTHROPIC_KEY) {
-    ANTHROPIC_KEY = prompt('Enter your Anthropic API key to enable AI item identification:');
-    if (!ANTHROPIC_KEY) { toast('No API key — please fill in details manually.'); return; }
+    ANTHROPIC_KEY = prompt('Enter your Anthropic API key to enable AI identification:');
+    if (!ANTHROPIC_KEY) { toast('No key — identification skipped'); return; }
     localStorage.setItem('hi_apikey', ANTHROPIC_KEY);
   }
-  showAiStatus('loading', 'Analyzing with AI…');
+
+  showAiBar('loading', 'Analyzing with AI…');
   aiRunning = true;
-  document.getElementById('saveBtn').disabled = true;
+  document.getElementById('nextBtn').disabled = true;
 
   const prompt = `You are a home inventory AI. Analyze this photo of a household item.
-
-Return ONLY a valid JSON object — no markdown, no explanation, no code fences. Use this exact schema:
+Return ONLY a valid JSON object — no markdown, no explanation, no code fences:
 {
-  "name": "<specific descriptive name, e.g. 'West Elm Andes Sectional Sofa, Gray' or 'Samsung 65-inch QLED TV QN65Q80C'>",
-  "category": "<exactly one of: Furniture, Electronics, Appliance, Other>",
-  "condition": "<exactly one of: Good, Fair, Needs Attention>",
-  "value": <integer USD market value, or null if unknown>,
-  "notes": "<concise notes: brand, model, color, material, approx dimensions if furniture, serial/model number if visible, UPC if barcode detected. Max 80 words.>"
+  "name": "<specific name, e.g. 'West Elm Andes Sectional, Gray' or 'Samsung 65-inch QLED QN65Q80C'>",
+  "category": "<Furniture|Electronics|Appliance|Other>",
+  "condition": "<Good|Fair|Needs Attention>",
+  "value": <integer USD or null>,
+  "notes": "<brand, model, color, material, approx size if furniture, serial/UPC if visible. Max 80 words.>"
 }
-
-Rules:
-- If a barcode or UPC is visible, treat it as a product scan and identify the exact product.
-- If it's furniture with no barcode, describe style, primary material, color, and approximate size.
-- Be specific. "Sofa" is bad. "Mid-century modern 3-seat sofa in charcoal velvet, approx 84 inches wide" is good.
-- Condition: Good = no visible wear; Fair = minor wear; Needs Attention = visible damage.`;
+If a barcode/UPC is visible, identify the exact product. If furniture, describe style, material, color, size. Be specific.`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -495,222 +772,189 @@ Rules:
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 500,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: capturedB64 } },
-            { type: 'text', text: prompt }
-          ]
-        }]
+        max_tokens: 400,
+        messages: [{ role: 'user', content: [
+          { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: scanB64 } },
+          { type: 'text', text: prompt }
+        ]}]
       })
     });
-
-    if (!res.ok) {
-      const errBody = await res.json().catch(() => ({}));
-      throw new Error(errBody?.error?.message || `HTTP ${res.status}`);
-    }
-
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const raw = data.content?.find(b => b.type === 'text')?.text || '';
-    const clean = raw.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
+    const parsed = JSON.parse(raw.replace(/```json|```/g,'').trim());
 
-    if (parsed.name)      document.getElementById('fName').value = parsed.name;
-    if (parsed.category)  document.getElementById('fCat').value = parsed.category;
-    if (parsed.condition) document.getElementById('fCondition').value = parsed.condition;
-    if (parsed.value)     document.getElementById('fValue').value = parsed.value;
-    if (parsed.notes)     document.getElementById('fNotes').value = parsed.notes;
+    pendingItem = {
+      id: uid(),
+      name: parsed.name || 'Unknown Item',
+      cat: parsed.category || 'Other',
+      condition: parsed.condition || 'Good',
+      value: parsed.value || '',
+      notes: parsed.notes || '',
+      aiIdentified: true,
+      thumb: 'data:image/jpeg;base64,' + scanB64,
+    };
 
-    showAiStatus('success', '✦ AI identified — review and adjust if needed');
-    toast('AI filled in the item details');
+    showResult(pendingItem);
+    showAiBar('success', '✦ AI identified — assign to a room');
+    document.getElementById('nextBtn').disabled = false;
 
-  } catch (err) {
-    console.error('AI error:', err);
-    hideAiStatus();
-    toast('AI failed: ' + (err.message || 'unknown error') + ' — fill in manually');
+  } catch(err) {
+    console.error(err);
+    hideAiBar();
+    // Let user fill manually
+    pendingItem = { id: uid(), name: '', cat: 'Furniture', condition: 'Good', value: '', notes: '', aiIdentified: false, thumb: 'data:image/jpeg;base64,' + scanB64 };
+    document.getElementById('resultCard').classList.add('visible');
+    document.getElementById('resultCard').querySelector('h4').textContent = 'Fill in Details';
+    document.getElementById('resultName').textContent = '';
+    document.getElementById('resultMeta').innerHTML = '';
+    document.getElementById('resultValue').textContent = '';
+    document.getElementById('resultNotes').textContent = '';
+    document.getElementById('editFields').classList.add('open');
+    syncEditFields();
+    document.getElementById('nextBtn').disabled = false;
+    toast('AI failed — enter details manually');
   } finally {
     aiRunning = false;
-    document.getElementById('saveBtn').disabled = false;
   }
 }
 
-function showAiStatus(state, text) {
-  const el = document.getElementById('aiStatus');
-  el.className = 'ai-status visible' + (state === 'success' ? ' success' : '');
-  el.style.display = '';
-  document.getElementById('aiStatusText').textContent = text;
-}
-function hideAiStatus() {
-  const el = document.getElementById('aiStatus');
-  el.className = 'ai-status';
-  el.style.display = 'none';
+function showResult(item) {
+  const condClass = item.condition === 'Good' ? 'badge-good' : item.condition === 'Fair' ? 'badge-fair' : 'badge-needs';
+  document.getElementById('resultName').textContent = item.name;
+  document.getElementById('resultMeta').innerHTML = `<span class="badge badge-cat">${esc(item.cat)}</span><span class="badge ${condClass}">${esc(item.condition)}</span><span class="badge badge-ai">✦ AI</span>`;
+  document.getElementById('resultValue').innerHTML = item.value ? `Est. value: <strong>$${Number(item.value).toLocaleString()}</strong>` : '';
+  document.getElementById('resultNotes').textContent = item.notes;
+  document.getElementById('resultCard').classList.add('visible');
+  syncEditFields();
 }
 
-// ── MODALS ─────────────────────────────────────────────────────────────────
-function openScanItem() {
-  isScanMode = true; editingItemId = null; capturedB64 = null;
-  clearForm();
-  document.getElementById('modalTitle').textContent = 'Scan Item';
-  document.getElementById('cameraZone').style.display = '';
-  // Reset camera zone
-  document.getElementById('cameraZone').classList.remove('has-photo');
-  document.getElementById('cameraPlaceholder').style.display = '';
-  document.getElementById('cameraPreview').style.display = 'none';
-  document.getElementById('cameraPreview').src = '';
-  document.getElementById('retakeBtn').style.display = 'none';
-  hideAiStatus();
-  document.getElementById('itemModal').classList.add('open');
+function toggleEditFields() {
+  const ef = document.getElementById('editFields');
+  ef.classList.toggle('open');
+  if (ef.classList.contains('open')) syncEditFields();
 }
 
-function openAddItem() {
-  isScanMode = false; editingItemId = null; capturedB64 = null;
-  clearForm();
-  document.getElementById('modalTitle').textContent = 'Add Item';
-  document.getElementById('cameraZone').style.display = 'none';
-  hideAiStatus();
-  document.getElementById('itemModal').classList.add('open');
-  setTimeout(() => document.getElementById('fName').focus(), 60);
+function syncEditFields() {
+  if (!pendingItem) return;
+  document.getElementById('fName').value = pendingItem.name;
+  document.getElementById('fCat').value = pendingItem.cat;
+  document.getElementById('fCondition').value = pendingItem.condition;
+  document.getElementById('fValue').value = pendingItem.value || '';
+  document.getElementById('fNotes').value = pendingItem.notes || '';
 }
 
-function editItem(id) {
-  const item = items.find(i => i.id === id);
-  if (!item) return;
-  isScanMode = false; editingItemId = id; capturedB64 = null;
-  document.getElementById('modalTitle').textContent = 'Edit Item';
-  document.getElementById('cameraZone').style.display = 'none';
-  document.getElementById('fName').value = item.name;
-  document.getElementById('fCat').value = item.cat;
-  document.getElementById('fCondition').value = item.condition;
-  document.getElementById('fValue').value = item.value || '';
-  document.getElementById('fNotes').value = item.notes || '';
-  hideAiStatus();
-  document.getElementById('itemModal').classList.add('open');
-}
-
-function clearForm() {
-  ['fName','fValue','fNotes'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('fCat').value = 'Furniture';
-  document.getElementById('fCondition').value = 'Good';
-}
-
-function saveItem() {
-  if (aiRunning) { toast('Please wait — AI is still analyzing…'); return; }
+function collectEditFields() {
+  if (!pendingItem) return;
   const name = document.getElementById('fName').value.trim();
-  if (!name) { document.getElementById('fName').focus(); toast('Item name is required'); return; }
-
-  let thumb = null;
-  if (isScanMode && capturedB64) {
-    thumb = 'data:image/jpeg;base64,' + capturedB64;
-  } else if (editingItemId) {
-    thumb = items.find(i => i.id === editingItemId)?.thumb || null;
-  }
-
-  const item = {
-    id: editingItemId || uid(),
-    room: activeRoom,
-    name,
-    cat: document.getElementById('fCat').value,
-    condition: document.getElementById('fCondition').value,
-    value: document.getElementById('fValue').value.trim(),
-    notes: document.getElementById('fNotes').value.trim(),
-    aiIdentified: isScanMode && !!capturedB64,
-    thumb,
-    created: editingItemId ? (items.find(i => i.id === editingItemId)?.created || Date.now()) : Date.now(),
-  };
-
-  if (editingItemId) {
-    items[items.findIndex(i => i.id === editingItemId)] = item;
-    toast('Item updated');
-  } else {
-    items.push(item);
-    toast('Item added ✓');
-  }
-  closeItemModal();
-  render();
+  if (name) pendingItem.name = name;
+  pendingItem.cat = document.getElementById('fCat').value;
+  pendingItem.condition = document.getElementById('fCondition').value;
+  pendingItem.value = document.getElementById('fValue').value.trim();
+  pendingItem.notes = document.getElementById('fNotes').value.trim();
 }
 
-function deleteItem(id) {
-  if (!confirm('Remove this item?')) return;
-  items = items.filter(i => i.id !== id);
-  toast('Item removed');
-  render();
+// ── ASSIGN ROOM ────────────────────────────────────────────────────────────
+function renderAssignFloor() {
+  const img = document.getElementById('assignFloorImg');
+  const wrap = document.getElementById('assignFloorWrap');
+  img.src = floorplanDataUrl;
+
+  const badge = document.createElement('span');
+
+  // Place markers after image loads
+  img.onload = () => placeAllMarkers(true);
+  if (img.complete) placeAllMarkers(true);
+
+  // Reposition on resize
+  wrap.style.position = 'relative';
 }
 
-function closeItemModal() {
-  document.getElementById('itemModal').classList.remove('open');
-  capturedB64 = null; aiRunning = false;
-  document.getElementById('saveBtn').disabled = false;
+function assignItemToRoom(roomId) {
+  collectEditFields();
+  if (!pendingItem) return;
+  if (!pendingItem.name) { toast('Please add an item name first'); backToScan(); return; }
+
+  pendingItem.roomId = roomId;
+  items.push(pendingItem);
+  saveAll();
+
+  const room = rooms.find(r => r.id === roomId);
+  lastAssignedRoomId = roomId;
+  toast(`"${pendingItem.name}" added to ${room?.name || 'room'}`);
+
+  pendingItem = null; scanB64 = null;
+  goHome();
+  resetScan();
 }
 
-function openAddRoom() {
-  document.getElementById('rName').value = '';
-  selectedEmoji = EMOJIS[0];
-  const picker = document.getElementById('emojiPicker');
-  picker.innerHTML = '';
-  EMOJIS.forEach(e => {
-    const btn = document.createElement('div');
-    btn.className = 'emoji-opt' + (e === selectedEmoji ? ' selected' : '');
-    btn.textContent = e;
-    btn.onclick = () => { selectedEmoji = e; picker.querySelectorAll('.emoji-opt').forEach(el => el.classList.remove('selected')); btn.classList.add('selected'); };
-    picker.appendChild(btn);
-  });
-  document.getElementById('roomModal').classList.add('open');
-  setTimeout(() => document.getElementById('rName').focus(), 60);
+function showAiBar(state, text) {
+  const el = document.getElementById('aiBar');
+  el.className = 'ai-bar visible' + (state === 'success' ? ' success' : '');
+  document.getElementById('aiBarText').textContent = text;
 }
-
-function saveRoom() {
-  const name = document.getElementById('rName').value.trim();
-  if (!name) { document.getElementById('rName').focus(); return; }
-  const id = 'room_' + uid();
-  rooms.push({ id, name, emoji: selectedEmoji });
-  activeRoom = id;
-  closeRoomModal();
-  toast('Room added');
-  render();
+function hideAiBar() {
+  document.getElementById('aiBar').className = 'ai-bar';
 }
-
-function closeRoomModal() { document.getElementById('roomModal').classList.remove('open'); }
 
 // ── EXPORT ─────────────────────────────────────────────────────────────────
-function exportJSON() {
-  const out = { rooms, items: items.map(i => ({...i, thumb: undefined})), exported: new Date().toISOString() };
-  download('home-inventory.json', JSON.stringify(out, null, 2), 'application/json');
-  toast('JSON exported');
-}
 function exportCSV() {
-  const rows = [['Room','Item','Category','Condition','Est. Value','AI Identified','Notes']];
+  const rows = [['Room','Item','Category','Condition','Est. Value','AI','Notes']];
   items.forEach(i => {
-    const room = rooms.find(r => r.id === i.room);
-    rows.push([room?.name||'', i.name, i.cat, i.condition, i.value||'', i.aiIdentified?'Yes':'No', i.notes||'']);
+    const room = rooms.find(r => r.id === i.roomId);
+    rows.push([room?.name||'Unassigned', i.name, i.cat, i.condition, i.value||'', i.aiIdentified?'Yes':'No', i.notes||'']);
   });
   const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  download('home-inventory.csv', csv, 'text/csv');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = 'home-inventory.csv'; a.click();
   toast('CSV exported');
 }
-function download(filename, content, type) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([content], { type }));
-  a.download = filename; a.click();
+
+// ── IMAGE UTILS ────────────────────────────────────────────────────────────
+function compressImage(file, maxDim, quality) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        let {width:w, height:h} = img;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) { h = Math.round(h*maxDim/w); w = maxDim; }
+          else { w = Math.round(w*maxDim/h); h = maxDim; }
+        }
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(c.toDataURL('image/jpeg', quality));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
-// ── UTILS ──────────────────────────────────────────────────────────────────
-function uid() { return Math.random().toString(36).slice(2, 9); }
+// ── MISC ───────────────────────────────────────────────────────────────────
+function uid() { return Math.random().toString(36).slice(2,9); }
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function toast(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg; el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2500);
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2600);
 }
 
-document.getElementById('itemModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeItemModal(); });
-document.getElementById('roomModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeRoomModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeItemModal(); closeRoomModal(); } });
+// Reposition markers on window resize
+window.addEventListener('resize', () => {
+  const fs = document.getElementById('floorScreen');
+  if (fs.style.display !== 'none') placeAllMarkers(false);
+  const ss = document.getElementById('scanScreen');
+  const step2 = document.getElementById('scanStep2');
+  if (ss.style.display !== 'none' && step2.classList.contains('active')) placeAllMarkers(true);
+});
 
-load();
-render();
+init();
 </script>
-
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
