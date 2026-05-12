@@ -750,7 +750,7 @@ async function runAI() {
   aiRunning = true;
   document.getElementById('nextBtn').disabled = true;
 
-  const prompt = `You are a home inventory AI. Analyze this photo of a household item.
+  const aiPrompt = `You are a home inventory AI. Analyze this photo of a household item.
 Return ONLY a valid JSON object — no markdown, no explanation, no code fences:
 {
   "name": "<specific name, e.g. 'West Elm Andes Sectional, Gray' or 'Samsung 65-inch QLED QN65Q80C'>",
@@ -775,7 +775,7 @@ If a barcode/UPC is visible, identify the exact product. If furniture, describe 
         max_tokens: 400,
         messages: [{ role: 'user', content: [
           { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: scanB64 } },
-          { type: 'text', text: prompt }
+          { type: 'text', text: aiPrompt }
         ]}]
       })
     });
